@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestagota | Marketing Digital para Prestamistas</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            dark: '#0B1120',
+                            card: 'rgba(17, 24, 39, 0.7)',
+                            primary: '#00F0FF',
+                            secondary: '#7000FF',
+                        }
+                    },
+                    animation: {
+                        blob: "blob 7s infinite",
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            "0%": { transform: "translate(0px, 0px) scale(1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1)" }
+                        },
+                        fadeInUp: {
+                            "0%": { opacity: 0, transform: "translateY(40px)" },
+                            "100%": { opacity: 1, transform: "translateY(0)" }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B1120;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Utilidades Glassmorphism */
+        .glass {
+            background: rgba(17, 25, 40, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Utilidades para animaciones de revelado */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #0B1120; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00F0FF; }
+
+        /* Estilo para los inputs dark */
+        .input-dark {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-dark:focus {
+            outline: none;
+            border-color: #00F0FF;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+        select option {
+            background-color: #0B1120;
+            color: white;
+        }
+
+        /* Estilos del botón Submit Inteligente */
+        #submitBtn.valid-state {
+            opacity: 1;
+            cursor: pointer;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            background: linear-gradient(to right, #00F0FF, #7000FF);
+            color: white;
+            border: none;
+        }
+        #submitBtn:not(.valid-state) {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased relative">
+
+    <!-- Background Animado de Blobs -->
+    <div class="fixed w-full h-full inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-brand-secondary rounded-full mix-blend-screen filter blur-[100px] opacity-40 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-primary rounded-full mix-blend-screen filter blur-[100px] opacity-40 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-blue-600 rounded-full mix-blend-screen filter blur-[100px] opacity-40 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass border-b-0 border-white/10 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(0,240,255,0.5)]">
+                    <i class="ph ph-drop text-white"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-white uppercase">Presta<span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">Gota</span></span>
+            </div>
+            <div class="hidden md:flex gap-6 items-center">
+                <a href="#servicios" class="text-gray-300 hover:text-white transition-colors text-sm font-semibold">Servicios</a>
+                <a href="#precios" class="text-gray-300 hover:text-white transition-colors text-sm font-semibold">Precios</a>
+                <a href="#campaignForm" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all text-sm font-semibold shadow-lg backdrop-blur-sm">
+                    Crear Campaña
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section Central -->
+    <section class="relative pt-32 pb-12 px-6 overflow-hidden text-center flex flex-col items-center">
+        <div class="z-10 animate-fade-in-up w-full max-w-4xl mx-auto">
+            
+            <div class="inline-block px-4 py-1.5 rounded-full border border-brand-primary/30 bg-brand-primary/10 text-brand-primary text-sm font-semibold mb-6 shadow-[0_0_10px_rgba(0,240,255,0.2)]">
+                <i class="ph ph-rocket-launch mr-2"></i>Marketing Exclusivo para Prestamistas
+            </div>
+            
+            <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight mb-6">
+                Multiplica tus Clientes con <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">Publicidad Masiva</span>
+            </h1>
+            
+            <p class="text-gray-400 text-lg lg:text-xl mb-8 leading-relaxed mx-auto max-w-2xl">
+                Creamos campañas publicitarias altamente segmentadas para prestamistas. Filtramos la ubicación específica de tus clientes ideales y dirigimos tus anuncios exclusivamente a dueños de negocios y comerciantes.
+            </p>
+
+            <!-- Botón secundario Asesor y Trust Badges -->
+            <div class="flex flex-col items-center justify-center gap-6 mb-12">
+                <a href="https://wa.me/tu_numero" target="_blank" class="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white transition-all text-sm font-bold">
+                    <i class="ph ph-whatsapp-logo text-xl text-green-400"></i> Hablar con un Asesor
+                </a>
+                
+                <div class="flex items-center gap-4">
+                    <div class="flex -space-x-3">
+                        <img class="w-10 h-10 rounded-full border-2 border-[#0B1120] object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente">
+                        <img class="w-10 h-10 rounded-full border-2 border-[#0B1120] object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Cliente">
+                        <img class="w-10 h-10 rounded-full border-2 border-[#0B1120] object-cover" src="https://randomuser.me/api/portraits/men/68.jpg" alt="Cliente">
+                        <div class="w-10 h-10 rounded-full border-2 border-[#0B1120] bg-gray-800 flex items-center justify-center text-xs font-bold">+500</div>
+                    </div>
+                    <div class="text-left">
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 font-semibold">Prestamistas confían en nosotros</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario Inteligente Centrado -->
+            <div class="glass rounded-3xl p-6 md:p-8 relative overflow-hidden border border-white/10 w-full max-w-2xl mx-auto shadow-[0_10px_30px_rgba(0,0,0,0.3)] text-left">
+                <div class="text-center mb-6 relative z-10">
+                    <h2 class="text-2xl font-extrabold mb-1">Inicia tu Campaña Ahora</h2>
+                    <p class="text-gray-400 text-sm">Completa los datos y te contactaremos de inmediato</p>
+                </div>
+
+                <form id="campaignForm" class="space-y-4 relative z-10">
+                    <!-- 1. Nombre o Escritorio -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Tu nombre o Escritorio</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-xl input-dark text-sm" placeholder="Ej: Financiera Express">
+                    </div>
+
+                    <!-- 2. WhatsApp Personal -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Tu WhatsApp Personal</label>
+                        <div class="flex gap-2">
+                            <select required class="w-[45%] px-2 py-3 rounded-xl input-dark text-xs appearance-none">
+                                <option value="" disabled selected>+00</option>
+                                <option value="+54">🇦🇷 Argentina (+54)</option>
+                                <option value="+591">🇧🇴 Bolivia (+591)</option>
+                                <option value="+55">🇧🇷 Brasil (+55)</option>
+                                <option value="+56">🇨🇱 Chile (+56)</option>
+                                <option value="+57">🇨🇴 Colombia (+57)</option>
+                                <option value="+506">🇨🇷 Costa Rica (+506)</option>
+                                <option value="+53">🇨🇺 Cuba (+53)</option>
+                                <option value="+593">🇪🇨 Ecuador (+593)</option>
+                                <option value="+503">🇸🇻 El Salvador (+503)</option>
+                                <option value="+34">🇪🇸 España (+34)</option>
+                                <option value="+502">🇬🇹 Guatemala (+502)</option>
+                                <option value="+504">🇭🇳 Honduras (+504)</option>
+                                <option value="+52">🇲🇽 México (+52)</option>
+                                <option value="+505">🇳🇮 Nicaragua (+505)</option>
+                                <option value="+507">🇵🇦 Panamá (+507)</option>
+                                <option value="+595">🇵🇾 Paraguay (+595)</option>
+                                <option value="+51">🇵🇪 Perú (+51)</option>
+                                <option value="+1">🇵🇷 Puerto Rico (+1)</option>
+                                <option value="+1-809">🇩🇴 Rep. Dominicana (+1)</option>
+                                <option value="+598">🇺🇾 Uruguay (+598)</option>
+                                <option value="+58">🇻🇪 Venezuela (+58)</option>
+                            </select>
+                            <input type="tel" required class="w-[55%] px-4 py-3 rounded-xl input-dark text-sm" placeholder="Ej: 300 123 4567">
+                        </div>
+                    </div>
+
+                    <!-- 3 y 4. País y Ciudad -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-1">País de la campaña</label>
+                            <select id="formPais" required class="w-full px-4 py-3 rounded-xl input-dark text-sm appearance-none">
+                                <option value="" disabled selected>Selecciona un país...</option>
+                                <option value="AR">🇦🇷 Argentina</option>
+                                <option value="BO">🇧🇴 Bolivia</option>
+                                <option value="BR">🇧🇷 Brasil</option>
+                                <option value="CL">🇨🇱 Chile</option>
+                                <option value="CO">🇨🇴 Colombia</option>
+                                <option value="CR">🇨🇷 Costa Rica</option>
+                                <option value="CU">🇨🇺 Cuba</option>
+                                <option value="EC">🇪🇨 Ecuador</option>
+                                <option value="SV">🇸🇻 El Salvador</option>
+                                <option value="ES">🇪🇸 España</option>
+                                <option value="GT">🇬🇹 Guatemala</option>
+                                <option value="HN">🇭🇳 Honduras</option>
+                                <option value="MX">🇲🇽 México</option>
+                                <option value="NI">🇳🇮 Nicaragua</option>
+                                <option value="PA">🇵🇦 Panamá</option>
+                                <option value="PY">🇵🇾 Paraguay</option>
+                                <option value="PE">🇵🇪 Perú</option>
+                                <option value="PR">🇵🇷 Puerto Rico</option>
+                                <option value="DO">🇩🇴 Rep. Dominicana</option>
+                                <option value="UY">🇺🇾 Uruguay</option>
+                                <option value="VE">🇻🇪 Venezuela</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-1">Ciudad Principal</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl input-dark text-sm" placeholder="Ej: Bogotá, CDMX, Sao Paulo...">
+                        </div>
+                    </div>
+
+                    <!-- 5. WhatsApp Comercial -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">WhatsApp comercial para la campaña</label>
+                        <div class="flex gap-2">
+                            <select required class="w-[45%] px-2 py-3 rounded-xl input-dark text-xs appearance-none">
+                                <option value="" disabled selected>+00</option>
+                                <option value="+54">🇦🇷 Argentina (+54)</option>
+                                <option value="+591">🇧🇴 Bolivia (+591)</option>
+                                <option value="+55">🇧🇷 Brasil (+55)</option>
+                                <option value="+56">🇨🇱 Chile (+56)</option>
+                                <option value="+57">🇨🇴 Colombia (+57)</option>
+                                <option value="+506">🇨🇷 Costa Rica (+506)</option>
+                                <option value="+53">🇨🇺 Cuba (+53)</option>
+                                <option value="+593">🇪🇨 Ecuador (+593)</option>
+                                <option value="+503">🇸🇻 El Salvador (+503)</option>
+                                <option value="+34">🇪🇸 España (+34)</option>
+                                <option value="+502">🇬🇹 Guatemala (+502)</option>
+                                <option value="+504">🇭🇳 Honduras (+504)</option>
+                                <option value="+52">🇲🇽 México (+52)</option>
+                                <option value="+505">🇳🇮 Nicaragua (+505)</option>
+                                <option value="+507">🇵🇦 Panamá (+507)</option>
+                                <option value="+595">🇵🇾 Paraguay (+595)</option>
+                                <option value="+51">🇵🇪 Perú (+51)</option>
+                                <option value="+1">🇵🇷 Puerto Rico (+1)</option>
+                                <option value="+1-809">🇩🇴 Rep. Dominicana (+1)</option>
+                                <option value="+598">🇺🇾 Uruguay (+598)</option>
+                                <option value="+58">🇻🇪 Venezuela (+58)</option>
+                            </select>
+                            <input type="tel" required class="w-[55%] px-4 py-3 rounded-xl input-dark text-sm" placeholder="Número para clientes">
+                        </div>
+                    </div>
+
+                    <!-- 6. Detalles Adicionales -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Detalles Adicionales</label>
+                        <textarea rows="3" class="w-full px-4 py-3 rounded-xl input-dark text-sm" placeholder="Ej: Quiero enfocarme solo en los barrios céntricos, comerciantes minoristas..."></textarea>
+                    </div>
+
+                    <!-- Submit Button Único -->
+                    <button type="submit" id="submitBtn" disabled class="w-full py-4 rounded-xl font-bold text-sm transition-all duration-300 mt-2 flex justify-center items-center gap-2">
+                        <span>Crear Campaña</span>
+                        <i class="ph ph-arrow-right"></i>
+                    </button>
+                    
+                    <div id="successMessage" class="hidden text-center p-3 rounded-lg bg-green-500/20 border border-green-500/50 text-green-400 text-sm mt-4">
+                        <i class="ph ph-check-circle inline-block mr-1"></i> ¡Datos recibidos! Un experto te contactará en breve.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Servicios (Espaciado compacto) -->
+    <section id="servicios" class="py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10 reveal">
+                <h2 class="text-3xl font-extrabold mb-4">¿CÓMO FUNCIONA?</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">No necesitas saber de tecnología, de diseño, ni de redes sociales. Nosotros nos encargamos de todo el trabajo difícil para que tú solo te dediques a contestar tu teléfono y entregar los préstamos.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Paso 1 (Nuevo) -->
+                <div class="glass p-6 rounded-2xl reveal">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4 text-purple-400 text-2xl">
+                        <i class="ph ph-list-checks"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">1. Rellena el Formulario</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-3">
+                        El primer paso es compartirnos los datos básicos de tu campaña en el formulario de arriba. 
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Solo necesitamos saber a qué ciudad o zonas te diriges, a qué perfil apuntas (comerciantes, empleados, etc.) y el número de WhatsApp donde tu equipo o tú recibirán las solicitudes de crédito.
+                    </p>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="glass p-6 rounded-2xl reveal animation-delay-200">
+                    <div class="w-12 h-12 bg-brand-primary/20 rounded-xl flex items-center justify-center mb-4 text-brand-primary text-2xl">
+                        <i class="ph ph-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">2. Diseñamos tus Anuncios</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-3">
+                        Nosotros creamos las imágenes, los videos y escribimos los textos que verán tus futuros clientes en Facebook e Instagram. 
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Hacemos que tu negocio de préstamos se vea muy profesional y seguro, para que las personas sientan total confianza al pedirte dinero prestado, destacándote por encima de tu competencia.
+                    </p>
+                </div>
+                
+                <!-- Paso 3 (Mejorado con lenguaje técnico-comercial) -->
+                <div class="glass p-6 rounded-2xl reveal animation-delay-400">
+                    <div class="w-12 h-12 bg-brand-secondary/20 rounded-xl flex items-center justify-center mb-4 text-brand-secondary text-2xl">
+                        <i class="ph ph-target"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">3. Segmentación Estratégica</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-3">
+                        Usamos algoritmos avanzados para mostrar tu publicidad con precisión milimétrica. Le indicamos al sistema que filtre la audiencia y evite clics de curiosos sin capacidad de pago.
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        De esta forma, tus anuncios impactan exclusivamente a dueños de negocios, comerciantes, pymes o empleados estables dentro de la zona geográfica que nos definiste, maximizando el valor de tu inversión.
+                    </p>
+                </div>
+                
+                <!-- Paso 4 -->
+                <div class="glass p-6 rounded-2xl reveal animation-delay-600">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4 text-blue-400 text-2xl">
+                        <i class="ph ph-whatsapp-logo"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">4. Mensajes a tu WhatsApp</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-3">
+                        Conectamos los anuncios directamente a tu teléfono celular. Cuando un comerciante ve el anuncio y necesita capital, solo toca un botón.
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Inmediatamente, te llegará un mensaje a tu WhatsApp personal con la solicitud del cliente. Todos los días revisamos que el sistema funcione correctamente para que nunca dejen de llegarte solicitudes nuevas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section Dinámico -->
+    <section id="precios" class="py-12 px-6 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10 reveal">
+                <h2 class="text-3xl font-extrabold mb-4">Planes Transparentes y Rentables</h2>
+                <p class="text-gray-400 mb-6">Selecciona tu país para ver los precios en moneda local.</p>
+                
+                <!-- Selector de país sincronizado -->
+                <div class="inline-block relative w-full max-w-xs mx-auto mb-8">
+                    <select id="pricePais" class="w-full px-4 py-3 rounded-full input-dark text-sm font-bold text-center appearance-none cursor-pointer">
+                        <option value="" disabled selected>Elige tu país...</option>
+                        <option value="AR">🇦🇷 Argentina</option>
+                        <option value="BO">🇧🇴 Bolivia</option>
+                        <option value="BR">🇧🇷 Brasil</option>
+                        <option value="CL">🇨🇱 Chile</option>
+                        <option value="CO">🇨🇴 Colombia</option>
+                        <option value="CR">🇨🇷 Costa Rica</option>
+                        <option value="CU">🇨🇺 Cuba</option>
+                        <option value="EC">🇪🇨 Ecuador</option>
+                        <option value="SV">🇸🇻 El Salvador</option>
+                        <option value="ES">🇪🇸 España</option>
+                        <option value="GT">🇬🇹 Guatemala</option>
+                        <option value="HN">🇭🇳 Honduras</option>
+                        <option value="MX">🇲🇽 México</option>
+                        <option value="NI">🇳🇮 Nicaragua</option>
+                        <option value="PA">🇵🇦 Panamá</option>
+                        <option value="PY">🇵🇾 Paraguay</option>
+                        <option value="PE">🇵🇪 Perú</option>
+                        <option value="PR">🇵🇷 Puerto Rico</option>
+                        <option value="DO">🇩🇴 Rep. Dominicana</option>
+                        <option value="UY">🇺🇾 Uruguay</option>
+                        <option value="VE">🇻🇪 Venezuela</option>
+                    </select>
+                    <i class="ph ph-caret-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto relative z-10">
+                <!-- Plan Semanal -->
+                <div class="glass p-8 rounded-3xl reveal border border-white/10 hover:border-brand-primary/50 transition-colors flex flex-col">
+                    <h3 class="text-2xl font-bold mb-2 text-white">Plan Semanal</h3>
+                    <p class="text-gray-400 text-sm mb-6">Ideal para probar nuestro sistema</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-white" id="price-sem">USD 79</span>
+                        <span class="text-gray-500 text-sm">/semana</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3"><i class="ph ph-check-circle text-brand-primary text-xl mt-0.5"></i><span class="text-sm text-gray-300">Más de 20.000 impresiones garantizadas</span></li>
+                        <li class="flex items-start gap-3"><i class="ph ph-check-circle text-brand-primary text-xl mt-0.5"></i><span class="text-sm text-gray-300 font-bold text-white">Mínimo 50 clientes potenciales</span></li>
+                        <li class="flex items-start gap-3"><i class="ph ph-check-circle text-brand-primary text-xl mt-0.5"></i><span class="text-sm text-gray-300">Segmentación por actividad económica</span></li>
+                        <li class="flex items-start gap-3"><i class="ph ph-shield-check text-green-400 text-xl mt-0.5"></i><span class="text-sm text-green-400 font-bold">Garantía: Resultados o tu dinero de vuelta</span></li>
+                    </ul>
+                    <a href="#campaignForm" class="block w-full py-3 rounded-xl border border-brand-primary/50 text-white font-bold text-sm text-center transition-all hover:bg-brand-primary/10 mt-auto">Comenzar Semanal</a>
+                </div>
+
+                <!-- Plan Mensual (Recomendado) -->
+                <div class="glass p-8 rounded-3xl reveal border-2 border-brand-primary relative transform md:-translate-y-4 shadow-[0_0_30px_rgba(0,240,255,0.15)] flex flex-col">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-primary to-brand-secondary text-white text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap shadow-lg">
+                        MÁS POPULAR
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Plan Mensual</h3>
+                    <p class="text-gray-400 text-sm mb-6">Flujo constante para tu negocio</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary" id="price-men">USD 269</span>
+                        <span class="text-gray-500 text-sm">/mes</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3"><i class="ph ph-check-circle text-brand-primary text-xl mt-0.5"></i><span class="text-sm text-gray-300">Más de 80.000 impresiones garantizadas</span></li>
+                        <li class="flex items-start gap-3"><i class="ph ph-check-circle text-brand-primary text-xl mt-0.5"></i><span class="text-sm text-gray-300 font-bold text-white">Mínimo 200 clientes potenciales</span></li>
+                        <li class="flex items-start gap-3"><i class="ph ph-check-circle text-brand-primary text-xl mt-0.5"></i><span class="text-sm text-gray-300">Optimización de campaña diaria</span></li>
+                        <li class="flex items-start gap-3"><i class="ph ph-shield-check text-green-400 text-xl mt-0.5"></i><span class="text-sm text-green-400 font-bold">Garantía total de resultados</span></li>
+                    </ul>
+                    <a href="#campaignForm" class="block w-full py-3 rounded-xl bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold text-sm text-center transition-all hover:scale-105 shadow-lg mt-auto">Comenzar Mensual</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-[#070B14] py-8 px-6 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <i class="ph ph-drop text-brand-primary text-2xl"></i>
+                <span class="text-xl font-bold text-white">PRESTA<span class="text-brand-primary">GOTA</span></span>
+            </div>
+            <p class="text-gray-500 text-sm">© 2024 Prestagota. Todos los derechos reservados. Plataforma de marketing LatAm.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts para interactividad -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Lógica del Scroll Reveal
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => revealOnScroll.observe(el));
+
+            // 2. Diccionario de Precios Redondeados por País
+            const pricingData = {
+                "BR": { cur: "R$", sem: "400", men: "1.200" },
+                "AR": { cur: "ARS", sem: "80.000", men: "270.000" },
+                "BO": { cur: "Bs", sem: "550", men: "1.900" },
+                "CL": { cur: "CLP", sem: "75.000", men: "270.000" },
+                "CO": { cur: "COP", sem: "300.000", men: "1.000.000" },
+                "CR": { cur: "CRC", sem: "45.000", men: "150.000" },
+                "CU": { cur: "CUP", sem: "2.000", men: "7.000" },
+                "DO": { cur: "RD$", sem: "4.900", men: "17.000" },
+                "EC": { cur: "USD", sem: "79", men: "269" },
+                "SV": { cur: "USD", sem: "79", men: "269" },
+                "ES": { cur: "€", sem: "79", men: "269" },
+                "GT": { cur: "GTQ", sem: "650", men: "2.200" },
+                "HN": { cur: "HNL", sem: "2.000", men: "6.600" },
+                "MX": { cur: "MXN", sem: "1.500", men: "5.000" },
+                "NI": { cur: "NIO", sem: "3.000", men: "10.000" },
+                "PA": { cur: "USD", sem: "79", men: "269" },
+                "PY": { cur: "PYG", sem: "600.000", men: "2.000.000" },
+                "PE": { cur: "S/", sem: "300", men: "1.000" },
+                "PR": { cur: "USD", sem: "79", men: "269" },
+                "UY": { cur: "UYU", sem: "3.200", men: "11.000" },
+                "VE": { cur: "USD", sem: "79", men: "269" }
+            };
+
+            const formPais = document.getElementById('formPais');
+            const pricePais = document.getElementById('pricePais');
+            const form = document.getElementById('campaignForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+
+            function updatePrices(countryCode) {
+                if(!pricingData[countryCode]) return;
+                const data = pricingData[countryCode];
+                document.getElementById('price-sem').textContent = `${data.cur} ${data.sem}`;
+                document.getElementById('price-men').textContent = `${data.cur} ${data.men}`;
+            }
+
+            // Sincronización Formulario -> Precios
+            formPais.addEventListener('change', (e) => {
+                pricePais.value = e.target.value;
+                updatePrices(e.target.value);
+            });
+
+            // Sincronización Precios -> Formulario
+            pricePais.addEventListener('change', (e) => {
+                formPais.value = e.target.value;
+                formPais.dispatchEvent(new Event('input', { bubbles: true })); // Activa validación
+                updatePrices(e.target.value);
+            });
+
+            // Validación del Formulario
+            form.addEventListener('input', () => {
+                if (form.checkValidity()) {
+                    submitBtn.classList.add('valid-state');
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.classList.remove('valid-state');
+                    submitBtn.disabled = true;
+                }
+            });
+
+            // Envio del formulario
+            form.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="ph ph-spinner animate-spin text-xl"></i> Procesando...';
+                
+                setTimeout(() => {
+                    form.reset();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.classList.remove('valid-state');
+                    submitBtn.disabled = true;
+                    successMessage.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        successMessage.classList.add('hidden');
+                    }, 6000);
+                }, 2000);
+            });
+
+            // 3. Navbar efecto glass al hacer scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-lg', 'bg-[#0B1120]/90');
+                } else {
+                    navbar.classList.remove('shadow-lg', 'bg-[#0B1120]/90');
+                }
+            });
+            
+            // Trigger inicial para animaciones
+            setTimeout(() => {
+                const initialReveals = document.querySelectorAll('.reveal');
+                initialReveals.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if(rect.top < window.innerHeight) {
+                        el.classList.add('active');
+                    }
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>
